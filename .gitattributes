@@ -1,0 +1,14 @@
+* text=auto
+*.hpp text eol=lf
+*.h text eol=lf
+*.cpp text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.json text eol=lf
+*.png binary
+*.uf2 binary
+*.bin binary
+licenses/* -whitespace

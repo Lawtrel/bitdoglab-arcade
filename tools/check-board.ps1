@@ -1,0 +1,15 @@
+$ErrorActionPreference='Stop'
+$arcadeRoot=Split-Path -Parent $PSScriptRoot
+$pythonExe=$null
+$localPath=Join-Path $arcadeRoot 'local-settings.json'
+if (Test-Path -LiteralPath $localPath) {$local=Get-Content -LiteralPath $localPath -Raw | ConvertFrom-Json;$pythonExe=$local.python}
+if (!$pythonExe) {$pythonExe=(Get-Command python -ErrorAction Stop).Source}
+$folder=Join-Path $arcadeRoot 'firmware'
+$pointer=Join-Path $arcadeRoot 'dist\latest.json'
+if (Test-Path -LiteralPath $pointer) {
+  $latest=Get-Content -LiteralPath $pointer -Raw | ConvertFrom-Json
+  $candidate=Join-Path $latest.folder 'audit.json'
+  if (Test-Path -LiteralPath $candidate) {$candidateReport=Get-Content -LiteralPath $candidate -Raw | ConvertFrom-Json;if ($candidateReport.app -eq 'bitdoglab_arcade_v2') {$folder=$latest.folder}}
+}
+& $pythonExe -X utf8 (Join-Path $PSScriptRoot 'check_board.py') --out (Join-Path $folder 'runtime-check.json')
+if ($LASTEXITCODE -ne 0) {throw 'A consulta falhou; confira o OLED e feche outros monitores seriais.'}

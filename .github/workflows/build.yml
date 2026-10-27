@@ -1,0 +1,75 @@
+name: Test, preview and build
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install official build packages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib ninja-build clang-format
+      - name: Format C++ sources
+        run: find src -type f \( -name '*.hpp' -o -name '*.cpp' \) -print0 | xargs -0 clang-format -i
+      - name: Test game logic with sanitizers
+        run: |
+          mkdir -p work/host
+          g++ -std=c++17 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -Isrc tests/engine_test.cpp -o work/host/engine-test
+          work/host/engine-test
+          python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Render scenes from the real game engine
+        run: |
+          g++ -std=c++17 -O2 -Isrc tests/render_scenes.cpp -o work/host/render-scenes
+          work/host/render-scenes work/host
+          python tools/render_previews.py work/host docs/images
+      - name: Fetch pinned Pico SDK and USB dependency
+        run: |
+          git init .cache/pico-sdk
+          git -C .cache/pico-sdk remote add origin https://github.com/raspberrypi/pico-sdk.git
+          git -C .cache/pico-sdk fetch --depth 1 origin 95ea6acad131124694cda1c162c52cd30e0aece0
+          git -C .cache/pico-sdk checkout --detach FETCH_HEAD
+          git -C .cache/pico-sdk submodule update --init lib/tinyusb
+      - name: Build RP2040 firmware and audit UF2
+        run: |
+          cmake -S . -B work/build -G Ninja -DPICO_SDK_PATH="$PWD/.cache/pico-sdk" -DPICO_BOARD=pico_w -DCMAKE_BUILD_TYPE=Release -DPython3_EXECUTABLE="$(command -v python)"
+          cmake --build work/build --parallel 4
+          python tools/audit.py work/build
+          cp work/build/bitdoglab_arcade.uf2 work/build/bitdoglab_arcade.bin work/build/audit.json firmware/
+          python tools/build_info.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arcade-generated
+          path: |
+            firmware/bitdoglab_arcade.uf2
+            firmware/bitdoglab_arcade.bin
+            firmware/audit.json
+            firmware/build-info.json
+            docs/images/
+            src/
+  publish-generated:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v4
+        with:
+          name: arcade-generated
+          path: generated
+      - name: Copy only generated project files
+        run: |
+          cp -R generated/src/. src/
+          cp -R generated/docs/images/. docs/images/
+          cp generated/firmware/* firmware/
+      - run: python tools/publish_generated.py

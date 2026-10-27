@@ -1,0 +1,9 @@
+dist/
+restore/
+__pycache__/
+*.pyc
+work/
+build/
+.cache/
+local-settings.json
+RESTAURAR_TINYML.cmd
