@@ -1,0 +1,21 @@
+{
+  "status": "compiled_and_audited_not_physically_verified",
+  "app": "bitdoglab_arcade_v2",
+  "games": 8,
+  "uf2_sha256": "97de177555a5b7f03bf3ee07623082f71c00ca97f8ad725b2b2d62d67de4bbb6",
+  "uf2_bytes": 145920,
+  "blocks": 285,
+  "flash_image_bytes": 72940,
+  "bin_sha256": "11a4b3ff93c421c98aa7b7d57fec54785db5251f795041dbfed40361fe2cd6d4",
+  "selftest": "Embedded self-test runs after boot; not executed by this audit.",
+  "games_list": [
+    "Cobrinha",
+    "Pong",
+    "Blocos",
+    "Nave",
+    "Pulinho",
+    "Corrida Azul",
+    "Mini RPG",
+    "Labirintos"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_commit": "61c653a27ba21d91ea5d663893246d63ce7792f2",
+  "source_files_sha256": {
+    "src/main.cpp": "cad56c161db49123ff3fa9bbd4d767d4577d6ff071cd8223689f04f4a1e4a807",
+    "src/engine.hpp": "ebd6c56eea4ecc50c37c58737ee4b41865e6a9069c8f010d4623084d01d20155",
+    "src/hardware.hpp": "e025b3353e7d7a6b879988fdff2da191bfeaf0ce3b25310c0a4573cdcf6b5abe",
+    "src/font6x8.h": "938ae84c1e4cfd8304604496c7b1a65bccd63bcc4b18aba72ad85a1ee6eff205",
+    "src/ws2812.pio": "4aadc37a91cf2bd35cf9bb81ff1c40bbb94a8758bbfef1711f6aeef703d828f4",
+    "src/platform/pico_hardware.hpp": "be36330065cbcecf957c34f0d10f12090c653b18fedcfb41db25b4135387d1fa",
+    "src/core/types.hpp": "8bdb487b2ed681ee4585c30587800e4bb9e373770efcadcf4aecf80ee5542217",
+    "src/core/app.hpp": "95719e2124c0fbd8a5128364e22db4215b450debc5ede63a331ff67d5e44c6e3",
+    "src/core/game_factory.hpp": "05f74ff7f2713fd1cbbe3b9b4ed7ea5a4356efbbe6c6c986f267d3cf0942f223",
+    "src/core/game_session.hpp": "d2487bd32b8f946dadf654cbafdf0f7fff74d82af4503d36dfbf81493f3f9024",
+    "src/ui/framebuffer.hpp": "c5a86d89076f1e45de8ca692baa6d9ea2dbcb0596bb0a537c2e75a03faf83c22",
+    "src/games/invaders.hpp": "b303fcc6a1b8b32c9a0f8de0b65a3d154d890af391104b7247a5a987b8e2be0b",
+    "src/games/rpg.hpp": "9cf6e89bddac1072a9746cf5be3a24a856d6be6ee3f9d64c7302b60ee78a6a9d",
+    "src/games/runner.hpp": "0cc8b5e7a347c2cb0b2667fa1a48e07472a627896494eb26e6966566f5ee84bd",
+    "src/games/maze.hpp": "d24d62ea51a66a495baf9748fedc2b543dba2267942bc040c121597eaa73cd6c",
+    "src/games/blocks.hpp": "1b41c07c9edc4e6dcdb2c92961bec3daebf9ae93ba40d56e864f992c21197ce6",
+    "src/games/pong.hpp": "59cb94746e0a59f682af1ef943ab4f3e5caa71fdd19a105c84299e8bc3b3c948",
+    "src/games/snake.hpp": "e87e4e63f05b583005eb474e3e686a188d1852441fb874bf6632d6da0575f42b",
+    "src/games/flappy.hpp": "2e828cb430359d45e961563f34d2d4f2405a05769e44ad177e9545416c137478"
+  },
+  "compiler": "arm-none-eabi-g++ (15:13.2.rel1-2) 13.2.1 20231009",
+  "sdk_commit": "95ea6acad131124694cda1c162c52cd30e0aece0",
+  "controls": {
+    "action": "B/right/GPIO6",
+    "pause": "A/left/GPIO5",
+    "menu": "joystick/GPIO22"
+  },
+  "host_tests": "passed_before_build",
+  "preview_origin": "deterministic C++ framebuffer scenes, not device photos",
+  "physical_validation": "pending_for_this_version"
+}
