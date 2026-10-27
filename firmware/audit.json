@@ -18,12 +18,5 @@
     "Mini RPG",
     "Labirintos",
     "Pokemon Mini"
-  ],
-  "physical_validation": "user_confirmed_basic_smoke_test",
-  "physical_checks": [
-    "menu with nine games",
-    "RGB LED and matrix can be switched off",
-    "brightness adjustment",
-    "Pokemon Mini opens"
   ]
 }

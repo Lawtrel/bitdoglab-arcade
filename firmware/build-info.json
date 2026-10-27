@@ -1,5 +1,5 @@
 {
-  "source_commit": "45959b619921671a3d4b6084335084dd1eb5b463",
+  "source_commit": "9b0be4faf23cd459c13b800fa9ffb1d2dead0ce1",
   "source_files_sha256": {
     "src/font6x8.h": "938ae84c1e4cfd8304604496c7b1a65bccd63bcc4b18aba72ad85a1ee6eff205",
     "src/hardware.hpp": "e025b3353e7d7a6b879988fdff2da191bfeaf0ce3b25310c0a4573cdcf6b5abe",
@@ -31,11 +31,5 @@
   },
   "host_tests": "passed_before_build",
   "preview_origin": "deterministic C++ framebuffer scenes, not device photos",
-  "physical_validation": "user_confirmed_basic_smoke_test",
-  "physical_validation_checks": [
-    "menu with nine games",
-    "RGB LED and matrix can be switched off",
-    "brightness adjustment",
-    "Pokemon Mini opens"
-  ]
+  "physical_validation": "pending_for_this_version"
 }
