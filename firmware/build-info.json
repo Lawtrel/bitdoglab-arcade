@@ -31,5 +31,11 @@
   },
   "host_tests": "passed_before_build",
   "preview_origin": "deterministic C++ framebuffer scenes, not device photos",
-  "physical_validation": "pending_for_this_version"
+  "physical_validation": "user_confirmed_basic_smoke_test",
+  "physical_validation_checks": [
+    "menu with nine games",
+    "RGB LED and matrix can be switched off",
+    "brightness adjustment",
+    "Pokemon Mini opens"
+  ]
 }

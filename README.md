@@ -110,9 +110,9 @@ flowchart LR
 
 ## Validação e builds
 
-O workflow testa o motor com AddressSanitizer e UndefinedBehaviorSanitizer, verifica os botões, pausa, recordes, 100 labirintos conectados a missão do RPG, captura/cura/batalhas de Pokémon, limites dos menus e física da corrida. Também testa a conversão/auditoria UF2, gera as imagens e compila o firmware RP2040 com SDK fixado. Só depois de tudo passar publica imagens e binários gerados.
+O workflow testa o motor com AddressSanitizer e UndefinedBehaviorSanitizer, verifica os botões, pausa, recordes, 100 labirintos conectados e a missão do RPG, captura/cura/batalhas de Pokémon, limites dos menus e física da corrida. Também testa a conversão/auditoria UF2, gera as imagens e compila o firmware RP2040 com SDK fixado. Só depois de tudo passar publica imagens e binários gerados.
 
-Cada UF2 é comparado byte a byte com o BIN. `firmware/audit.json` contém os hashes e `firmware/build-info.json` identifica o código e os controles compilados. Compilação, testes no computador e resposta USB são evidências diferentes da verificação física de OLED, matriz e joystick. A V2 foi gravada pelo autor. As mudanças da V3 precisam ser conferidas na placa após a gravação.
+Cada UF2 é comparado byte a byte com o BIN. `firmware/audit.json` contém os hashes e `firmware/build-info.json` identifica o código e os controles compilados. O usuário confirmou a V3 na BitDogLab: menu com nove jogos, controle para desligar o LED RGB e a matriz, ajuste de brilho e abertura do Pokémon Mini. Isso registra uma verificação física básica dos recursos. Não equivale a um teste completo das partidas ou de todos os jogos.
 
 A conversão para UF2 usa Python; não executa picotool nem altera proteções do Windows. Não há dependência de pioasm no PC. Wi-Fi e Bluetooth não são utilizados.
 
@@ -142,3 +142,4 @@ Código novo: **MIT**. Pokémon e Sonic são marcas de seus respectivos titulare
 - [BitDogLab — projeto oficial](https://github.com/BitDogLab/BitDogLab)
 - [Pico SDK — hardware APIs](https://www.raspberrypi.com/documentation/pico-sdk/hardware.html)
 - [WS2812 — exemplo oficial](https://github.com/raspberrypi/pico-examples/tree/master/pio/ws2812)
+
