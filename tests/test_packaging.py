@@ -11,7 +11,7 @@ class PackagingTests(unittest.TestCase):
         binary=folder/'bitdoglab_arcade.bin';uf2=folder/'bitdoglab_arcade.uf2';binary.write_bytes(bytes(range(256))*3+b'abc'*19);convert(binary,uf2);return binary,uf2
     def test_roundtrip_and_padding_cover_every_binary_byte(self):
         with tempfile.TemporaryDirectory() as d:
-            folder=Path(d);self.fixture(folder);report=audit(folder);self.assertEqual(report['blocks'],4);self.assertEqual(report['games'],8)
+            folder=Path(d);self.fixture(folder);report=audit(folder);self.assertEqual(report['blocks'],4);self.assertEqual(report['games'],9)
     def test_wrong_family_or_changed_payload_is_rejected(self):
         for mode in ['family','payload','padding']:
             with self.subTest(mode=mode),tempfile.TemporaryDirectory() as d:

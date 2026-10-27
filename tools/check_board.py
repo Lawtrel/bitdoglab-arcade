@@ -19,9 +19,9 @@ with serial.Serial(found,115200,timeout=.3,write_timeout=3) as connection:
     while time.monotonic()<deadline:
         try:result=json.loads(connection.readline(4096))
         except (ValueError,UnicodeDecodeError):continue
-        if result.get('app')=='bitdoglab_arcade_v2':break
+        if result.get('app')=='bitdoglab_arcade_v3':break
     else:raise RuntimeError('O firmware Arcade nao respondeu. Feche outros monitores e confira a gravacao.')
-if result.get('games')!=8 or result.get('selftest') is not True:raise RuntimeError('Resposta de autoteste/jogos invalida.')
+if result.get('games')!=9 or result.get('selftest') is not True:raise RuntimeError('Resposta de autoteste/jogos invalida.')
 result['port']=found;result['verified_at_unix']=time.time()
 args.out.write_text(json.dumps(result,indent=2),encoding='utf-8')
 print(json.dumps(result,indent=2))

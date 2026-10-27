@@ -3,6 +3,7 @@
 #include "types.hpp"
 namespace arcade {
 struct GameSession {
+    RunnerState runner;PokemonState pokemon;
     GameSignal signal = GameSignal::Running;
     Event event = Event::None;
     int game = 0, score = 0, lives = 3, level = 1;
@@ -86,29 +87,8 @@ struct GameSession {
                 if (xx >= 0 && yy >= 0 && xx < width && yy < height)
                     seen[yy * width + xx] = true;
     }
-    float ground(float x) const {
-        int n = int(x);
-        for (int a : {196, 436, 696, 936})
-            if (n >= a && n < a + 24)
-                return 200;
-        int u = n % 260;
-        if (u >= 70 && u < 110)
-            return 56 - (u - 70) * .30f;
-        if (u >= 110 && u < 150)
-            return 44 + (u - 110) * .30f;
-        return 56;
-    }
-    void resetRunner() {
-        px = 18;
-        py = 56;
-        vx = 0;
-        vy = 0;
-        grounded = true;
-        rings = 0;
-        shieldMs = 800;
-        coins.fill(true);
-        crawlers.fill(true);
-    }
+    float ground(float x) const;
+    void resetRunner();
     void createRpg() {
         world.fill(0);
         seen.fill(false);
@@ -390,60 +370,7 @@ struct GameSession {
             s.line(x, y - 2, x, y + 2);
         }
     }
-    void drawRunner(Screen &s) {
-        int camera = int(clamp(px - 37, 0, 1112));
-        for (int x = 0; x < 128; x++) {
-            int y = int(ground(float(camera + x)));
-            if (y < 64) {
-                s.line(x, y, x, 63);
-                if ((x + camera) % 4 == 0)
-                    s.pixel(x, y + 2, false);
-            }
-        }
-        for (int i = 0; i < 86; i++)
-            if (coins[i]) {
-                int x = 40 + i * 14 - camera, y = int(ground(float(40 + i * 14))) - 13;
-                if (y < 64 && x >= 0 && x < 128)
-                    s.rect(x - 1, y - 1, 3, 4, false);
-            }
-        for (int spring : {176, 416, 676, 916, 1156}) {
-            int x = spring - camera, y = int(ground(float(spring)));
-            if (x >= 0 && x < 128) {
-                s.rect(x - 2, y - 4, 5, 2);
-                s.line(x - 2, y - 2, x + 2, y);
-            }
-        }
-        for (int i = 0; i < 8; i++)
-            if (crawlers[i]) {
-                int wx = int(130 + i * 139 + 4 * std::sin(elapsed * .003f)), x = wx - camera,
-                    y = int(ground(float(wx)));
-                if (x >= 0 && x < 128 && y < 64) {
-                    s.rect(x - 3, y - 5, 7, 4);
-                    s.pixel(x - 4, y - 1);
-                    s.pixel(x + 4, y - 1);
-                }
-            }
-        if (!shieldMs || (elapsed / 90) % 2) {
-            int x = int(px) - camera, y = int(py);
-            s.rect(x - 3, y - 7, 6, 6);
-            s.pixel(x - 4, y - 6);
-            s.pixel(x - 5, y - 4);
-            s.pixel(x + 2, y - 6, false);
-            if (std::fabs(vx) > 50) {
-                s.line(x - 5, y - 2, x - 9, y - 2);
-                s.line(x - 5, y - 5, x - 8, y - 5);
-            }
-            s.line(x - 3, y, x + 3, y);
-        }
-        int flag = 1225 - camera;
-        if (flag > 0 && flag < 128) {
-            s.line(flag, 24, flag, 55);
-            s.rect(flag, 24, 7, 5);
-        }
-        char b[24];
-        std::snprintf(b, sizeof(b), "R%02d F%d", rings, level);
-        s.text(43, 0, b);
-    }
+    void drawRunner(Screen &s);
     void reset_snake();
     void update_snake(const Input &in, unsigned dt);
     void draw_snake(Screen &s);
@@ -476,5 +403,9 @@ struct GameSession {
     void update_maze(const Input &in, unsigned dt);
     void draw_maze(Screen &s);
     void matrix_maze(Matrix &leds) const;
+    void reset_pokemon();
+    void update_pokemon(const Input&,unsigned);
+    void draw_pokemon(Screen&);
+    void matrix_pokemon(Matrix&)const;
 };
 } // namespace arcade

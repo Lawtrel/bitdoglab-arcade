@@ -21,11 +21,11 @@ def audit(folder):
         if end-start<length and any(block[32+end-start:32+length]):raise ValueError('Padding UF2 nao e zero')
         covered[start:end]=b'\x01'*(end-start)
     if not all(covered):raise ValueError('BIN nao foi coberto integralmente')
-    report={'status':'compiled_and_audited_not_physically_verified','app':'bitdoglab_arcade_v2','games':8,
+    report={'status':'compiled_and_audited_not_physically_verified','app':'bitdoglab_arcade_v3','games':9,
         'uf2_sha256':hashlib.sha256(blob).hexdigest(),'uf2_bytes':len(blob),'blocks':total,
         'flash_image_bytes':len(raw),'bin_sha256':hashlib.sha256(raw).hexdigest(),
         'selftest':'Embedded self-test runs after boot; not executed by this audit.',
-        'games_list':['Cobrinha','Pong','Blocos','Nave','Pulinho','Corrida Azul','Mini RPG','Labirintos']}
+        'games_list':['Cobrinha','Pong','Blocos','Nave','Pulinho','Corrida Azul','Mini RPG','Labirintos','Pokemon Mini']}
     (folder/'audit.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     return report
 

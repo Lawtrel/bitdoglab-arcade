@@ -9,7 +9,7 @@ struct ArcadeApp {
     GameSession session;
     Input last{};
     int selection = 0, settingRow = 0;
-    std::array<int, 8> best{};
+    std::array<int, kGameCount> best{};
     uint32_t elapsed = 0, navClock = 0;
     bool longHandled = false;
     static float clamp(float x, float low, float high) {
@@ -19,7 +19,7 @@ struct ArcadeApp {
         best[session.game] = std::max(best[session.game], session.score);
     }
     void start(int index) {
-        session.resetCommon(index % 8);
+        session.resetCommon(index % int(kGameCount));
         (session.*GameFactory::get(session.game).reset)();
         mode = Mode::Play;
         event = Event::Start;
@@ -83,7 +83,7 @@ struct ArcadeApp {
         bool navReady = elapsed >= navClock;
         if (mode == Mode::Menu) {
             if (navReady && std::fabs(in.y) > .5f) {
-                selection = (selection + (in.y > 0 ? 1 : 7)) % 8;
+                selection = (selection + (in.y > 0 ? 1 : int(kGameCount)-1)) % int(kGameCount);
                 navClock = elapsed + 190;
                 event = Event::Select;
             }
@@ -167,7 +167,7 @@ struct ArcadeApp {
             s.center(0, "BITDOG ARCADE");
             s.line(0, 10, 127, 10);
             for (int row = 0; row < 3; row++) {
-                int n = (selection + row + 7) % 8;
+                int n = (selection + row + int(kGameCount)-1) % int(kGameCount);
                 int y = 14 + row * 11;
                 if (row == 1) {
                     s.rect(0, y - 1, 128, 10);
@@ -259,10 +259,10 @@ struct ArcadeApp {
         };
         Color c = gameColor();
         if (mode == Mode::Settings || mode == Mode::Help || mode == Mode::Menu) {
-            constexpr uint8_t symbols[8][5] = {{30, 16, 30, 2, 30},  {17, 10, 4, 10, 17},
+            constexpr uint8_t symbols[kGameCount][5] = {{30, 16, 30, 2, 30},  {17, 10, 4, 10, 17},
                                                {31, 21, 31, 21, 31}, {14, 31, 21, 14, 17},
                                                {6, 15, 30, 12, 4},   {7, 14, 31, 12, 22},
-                                               {4, 14, 4, 14, 17},   {31, 17, 23, 20, 31}};
+                                               {4, 14, 4, 14, 17},   {31, 17, 23, 20, 31}, {14,17,31,17,14}};
             int n = (mode == Mode::Menu || mode == Mode::Help) ? selection : session.game;
             for (int y = 0; y < 5; y++)
                 for (int x = 0; x < 5; x++)
@@ -351,7 +351,7 @@ inline bool selfTest() {
     app.tick(pause);
     if (app.mode != Mode::Play)
         return false;
-    for (int game = 0; game < 8; game++) {
+    for (int game = 0; game < int(kGameCount); game++) {
         app.start(game);
         for (int i = 0; i < 300; i++) {
             Input in;

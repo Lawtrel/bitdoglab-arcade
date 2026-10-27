@@ -10,7 +10,7 @@ int main() {
     static arcade::Screen screen;
     screen.center(6, "BITDOG", 2);
     screen.center(28, "ARCADE", 2);
-    screen.center(53, "8 JOGOS / OLED + LED");
+    screen.center(53, "9 JOGOS / OLED + LED");
     board::display(screen);
     bool passed = arcade::selfTest();
     if (!passed) {
@@ -47,7 +47,7 @@ int main() {
         }
         int ch = getchar_timeout_us(0);
         if (ch == '?') {
-            std::printf("{\"app\":\"bitdoglab_arcade_v2\",\"games\":8,\"selftest\":true,\"oled\":%"
+            std::printf("{\"app\":\"bitdoglab_arcade_v3\",\"games\":9,\"selftest\":true,\"oled\":%"
                         "s,\"oled_sda\":%d,\"game\":%d,\"score\":%d}\n",
                         board::oled ? "true" : "false", board::oledSda, engine.session.game,
                         engine.session.score);

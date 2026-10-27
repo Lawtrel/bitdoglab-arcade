@@ -1,4 +1,4 @@
-param([switch]$Resume,[string]$BuildName=('build-'+(Get-Date -Format 'yyyyMMdd-HHmmss')),[string]$SdkPath=$env:PICO_SDK_PATH,[string]$ToolchainPath=$env:PICO_TOOLCHAIN_PATH)
+﻿param([switch]$Resume,[string]$BuildName=('build-'+(Get-Date -Format 'yyyyMMdd-HHmmss')),[string]$SdkPath=$env:PICO_SDK_PATH,[string]$ToolchainPath=$env:PICO_TOOLCHAIN_PATH)
 $ErrorActionPreference='Stop'
 $PSNativeCommandUseErrorActionPreference=$false
 $arcadeRoot=Split-Path -Parent $PSScriptRoot
@@ -50,7 +50,7 @@ $env:PATH="$compilerBin;$env:PATH"
 $taskTemp=Join-Path $stageRoot 'temp'
 New-Item -ItemType Directory -Path $taskTemp -Force | Out-Null
 $env:TMPDIR=$taskTemp;$env:TEMP=$taskTemp;$env:TMP=$taskTemp
-Write-Host 'Compilando 8 jogos no mesmo firmware. Nenhum arquivo do TinyML sera alterado.'
+Write-Host 'Compilando 9 jogos no mesmo firmware. Nenhum arquivo do TinyML sera alterado.'
 $ErrorActionPreference='Continue'
 & $pythonExe -X utf8 (Join-Path $PSScriptRoot 'run_logged.py') (Join-Path $build 'configure.log') $cmake -S $source -B $build -G Ninja "-DCMAKE_MAKE_PROGRAM=$ninja" '-DPICO_BOARD=pico_w' "-DPICO_SDK_PATH=$SdkPath" "-DPython3_EXECUTABLE=$pythonExe" '-DCMAKE_BUILD_TYPE=Release' '-DCMAKE_OBJECT_PATH_MAX=200'
 $configureCode=$LASTEXITCODE
