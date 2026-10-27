@@ -37,10 +37,16 @@ int main(){
   assert(arcade::pokemon_game::damage(0,2,5)>arcade::pokemon_game::damage(0,1,5));
   arcade::pokemon_game::encounter(game,1);game.pokemon.wildHp=1;game.pokemon.cursor=1;game.rng=1;int balls=game.pokemon.balls;arcade::Input capture;capture.actionPressed=true;app.tick(capture);
   assert(game.pokemon.count==2&&game.pokemon.team[1].species==1&&game.pokemon.balls==balls-1);assert(game.pokemon.phase==arcade::PokemonPhase::Explore);
-  // O nono jogo nao cria uma nona linha nos oito ajustes.
-  app.mode=arcade::Mode::Settings;app.settingRow=7;app.navClock=0;
+  // A quantidade de ajustes e independente da quantidade de jogos.
+  app.mode=arcade::Mode::Settings;app.settingRow=arcade::kSettingCount-1;app.navClock=0;
   arcade::Input down;down.y=1;app.tick(down);assert(app.settingRow==0);
   app.mode=arcade::Mode::Menu;app.selection=8;app.navClock=0;app.tick(down);assert(app.selection==0);
+  // Desligar a matriz apaga todos os pixels em todos os modos.
+  app.settings.matrixEnabled=false;
+  for(auto mode:{arcade::Mode::Menu,arcade::Mode::Settings,arcade::Mode::Help,arcade::Mode::Play,arcade::Mode::Pause,arcade::Mode::Over,arcade::Mode::Test}){app.mode=mode;colors.fill({255,255,255});app.matrix(colors);for(auto c:colors)assert(c.r==0&&c.g==0&&c.b==0);}
+  app.settingRow=8;app.settingChange(1);assert(app.settings.matrixEnabled);
+  app.settingRow=7;app.settingChange(1);assert(!app.settings.rgbEnabled);app.settingChange(1);assert(app.settings.rgbEnabled);
+  app.settingRow=2;app.settings.brightness=0;app.settingChange(-1);assert(app.settings.brightness==5);app.settingChange(1);assert(app.settings.brightness==0);
   // Professor cura e reabastece; a rota ate o ginasio continua acessivel.
   app.start(8);game.pokemon.team[0].hp=1;game.pokemon.balls=0;app.tick(capture);
   assert(game.pokemon.team[0].hp==32&&game.pokemon.balls==5&&app.mode==arcade::Mode::Dialog);

@@ -79,7 +79,7 @@ No checkout Windows, `GRAVAR_ARCADE.cmd` confere o hash e a identidade RPI-RP2 a
 | Fim de jogo | **B** reinicia; **A** volta ao menu |
 | Ajustes | Joystick navega; **B** altera; **A** volta |
 
-Nos ajustes você escolhe som, brilho, rotação da matriz e orientação dos eixos. O modo **EXTRA** mostra uma visão complementar do jogo. Em **PONTOS**, a matriz exibe o placar completo um algarismo de cada vez; uma luz lateral indica a posição do algarismo. O OLED mantém o total visível. Recordes e configurações ficam em RAM e reiniciam ao desligar.
+Nos ajustes você escolhe som, rotação da matriz e orientação dos eixos. **LED RGB** e **MATRIZ ON** desligam cada conjunto de luzes separadamente, inclusive nos menus e na pausa. **BRILHO LEDS** controla ambos em seis níveis: 1/255, 2/255, 3/255, 5/255, 8/255 e 18/255 do canal, sem alterar a OLED. O padrão é nível 2/6, bem abaixo do brilho padrão da V2. O RGB usa PWM para reduzir a intensidade. As opções ficam ativas até desligar ou reiniciar a placa. O modo **EXTRA** mostra uma visão complementar do jogo. Em **PONTOS**, a matriz exibe o placar completo um algarismo de cada vez; uma luz lateral indica a posição do algarismo. O OLED mantém o total visível. Recordes e configurações ficam em RAM e reiniciam ao desligar.
 
 ## Organização e padrões
 

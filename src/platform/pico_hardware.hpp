@@ -127,8 +127,7 @@ inline int matrixIndex(int x, int y, int rotation) {
 }
 inline void matrix(const std::array<arcade::Color, 25> &colors, const arcade::Settings &settings) {
     uint32_t values[25]{};
-    const unsigned brightness[3] = {3, 8, 18};
-    unsigned scale = brightness[settings.brightness];
+    unsigned scale = settings.matrixEnabled ? arcade::kLedBrightness[settings.brightness] : 0;
     for (int y = 0; y < 5; y++)
         for (int x = 0; x < 5; x++) {
             auto c = colors[y * 5 + x];
@@ -146,9 +145,12 @@ inline void init() {
         gpio_pull_up(pin);
     }
     for (uint pin : {13u, 11u, 12u}) {
-        gpio_init(pin);
-        gpio_set_dir(pin, GPIO_OUT);
-        gpio_put(pin, 0);
+        gpio_set_function(pin,GPIO_FUNC_PWM);
+        auto rgbSlice=pwm_gpio_to_slice_num(pin);
+        pwm_set_wrap(rgbSlice,255);
+        pwm_set_clkdiv(rgbSlice,16.0f);
+        pwm_set_gpio_level(pin,0);
+        pwm_set_enabled(rgbSlice,true);
     }
     gpio_set_function(PIN_BUZZ, GPIO_FUNC_PWM);
     auto slice = pwm_gpio_to_slice_num(PIN_BUZZ);
@@ -248,10 +250,11 @@ inline arcade::Input input(const arcade::Settings &settings) {
     in.rawY = rawY;
     return in;
 }
-inline void rgb(arcade::Color c) {
-    gpio_put(13, c.r > 30);
-    gpio_put(11, c.g > 30);
-    gpio_put(12, c.b > 30);
+inline void rgb(arcade::Color c,const arcade::Settings& settings) {
+    unsigned scale=settings.rgbEnabled?arcade::kLedBrightness[settings.brightness]:0;
+    pwm_set_gpio_level(13,unsigned(c.r)*scale/255);
+    pwm_set_gpio_level(11,unsigned(c.g)*scale/255);
+    pwm_set_gpio_level(12,unsigned(c.b)*scale/255);
 }
 inline void pump() {
     if (toneEnd && int32_t(now() - toneEnd) >= 0)

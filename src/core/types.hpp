@@ -7,6 +7,9 @@
 #include <initializer_list>
 namespace arcade {
 inline constexpr unsigned kGameCount=9;
+inline constexpr int kSettingCount=10;
+// Teto dos canais de 8 bits: dois niveis abaixo do minimo da V2 (3/255).
+inline constexpr std::array<unsigned,6> kLedBrightness={1,2,3,5,8,18};
 struct Color {
     uint8_t r = 0, g = 0, b = 0;
 };
@@ -21,6 +24,7 @@ enum class Mode { Menu, Help, Play, Pause, Over, Settings, Test, Dialog };
 enum class GameSignal { Running, Dialog, Finished };
 enum class Event { None, Select, Start, Point, Miss, Shot, Jump, Win };
 struct Settings {
+    bool rgbEnabled=true,matrixEnabled=true;
     bool sound = true, swapXY = false, invertX = false, invertY = true, secondScreen = true;
     int brightness = 1, rotation = 0;
 };

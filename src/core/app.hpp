@@ -42,7 +42,7 @@ struct ArcadeApp {
             settings.secondScreen = !settings.secondScreen;
             break;
         case 2:
-            settings.brightness = (settings.brightness + direction + 3) % 3;
+            settings.brightness = (settings.brightness + direction + int(kLedBrightness.size())) % int(kLedBrightness.size());
             break;
         case 3:
             settings.rotation = (settings.rotation + direction + 4) % 4;
@@ -57,6 +57,12 @@ struct ArcadeApp {
             settings.invertY = !settings.invertY;
             break;
         case 7:
+            settings.rgbEnabled=!settings.rgbEnabled;
+            break;
+        case 8:
+            settings.matrixEnabled=!settings.matrixEnabled;
+            break;
+        case 9:
             mode = Mode::Test;
             break;
         }
@@ -98,7 +104,7 @@ struct ArcadeApp {
         }
         if (mode == Mode::Settings) {
             if (navReady && std::fabs(in.y) > .5f) {
-                settingRow = (settingRow + (in.y > 0 ? 1 : 7)) % 8;
+                settingRow = (settingRow + (in.y > 0 ? 1 : kSettingCount-1)) % kSettingCount;
                 navClock = elapsed + 180;
                 event = Event::Select;
             } else if (navReady && std::fabs(in.x) > .5f) {
@@ -182,9 +188,9 @@ struct ArcadeApp {
         }
         if (mode == Mode::Settings) {
             s.center(0, "AJUSTES");
-            const char *labels[] = {"SOM",        "MATRIZ",     "BRILHO",     "GIRO MATRIZ",
-                                    "TROCAR X/Y", "INVERTER X", "INVERTER Y", "TESTAR PLACA"};
-            int top = std::max(0, std::min(4, settingRow - 1));
+            const char *labels[] = {"SOM",        "MODO MATRIZ",     "BRILHO LEDS",     "GIRO MATRIZ",
+                                    "TROCAR X/Y", "INVERTER X", "INVERTER Y", "LED RGB", "MATRIZ ON", "TESTAR PLACA"};
+            int top = std::max(0, std::min(kSettingCount-4, settingRow - 1));
             for (int r = 0; r < 4; r++) {
                 int n = top + r;
                 char value[16] = "";
@@ -194,7 +200,7 @@ struct ArcadeApp {
                     std::snprintf(value, sizeof(value), "%s",
                                   settings.secondScreen ? "EXTRA" : "PONTOS");
                 if (n == 2)
-                    std::snprintf(value, sizeof(value), "%d", settings.brightness + 1);
+                    std::snprintf(value, sizeof(value), "%d/6", settings.brightness + 1);
                 if (n == 3)
                     std::snprintf(value, sizeof(value), "%d", settings.rotation * 90);
                 if (n == 4)
@@ -203,6 +209,8 @@ struct ArcadeApp {
                     std::snprintf(value, sizeof(value), "%s", settings.invertX ? "SIM" : "NAO");
                 if (n == 6)
                     std::snprintf(value, sizeof(value), "%s", settings.invertY ? "SIM" : "NAO");
+                if(n==7)std::snprintf(value,sizeof(value),"%s",settings.rgbEnabled?"ON":"OFF");
+                if(n==8)std::snprintf(value,sizeof(value),"%s",settings.matrixEnabled?"ON":"OFF");
                 std::snprintf(b, sizeof(b), "%c%-12s%s", n == settingRow ? '>' : ' ', labels[n],
                               value);
                 s.text(0, 13 + r * 10, b);
@@ -253,6 +261,7 @@ struct ArcadeApp {
     }
     void matrix(Matrix &leds) const {
         leds.fill({});
+        if(!settings.matrixEnabled)return;
         auto put = [&](int x, int y, Color c) {
             if (x >= 0 && x < 5 && y >= 0 && y < 5)
                 leds[y * 5 + x] = c;
