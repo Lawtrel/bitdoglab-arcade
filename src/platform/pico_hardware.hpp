@@ -145,12 +145,12 @@ inline void init() {
         gpio_pull_up(pin);
     }
     for (uint pin : {13u, 11u, 12u}) {
-        gpio_set_function(pin,GPIO_FUNC_PWM);
-        auto rgbSlice=pwm_gpio_to_slice_num(pin);
-        pwm_set_wrap(rgbSlice,255);
-        pwm_set_clkdiv(rgbSlice,16.0f);
-        pwm_set_gpio_level(pin,0);
-        pwm_set_enabled(rgbSlice,true);
+        gpio_set_function(pin, GPIO_FUNC_PWM);
+        auto rgbSlice = pwm_gpio_to_slice_num(pin);
+        pwm_set_wrap(rgbSlice, 255);
+        pwm_set_clkdiv(rgbSlice, 16.0f);
+        pwm_set_gpio_level(pin, 0);
+        pwm_set_enabled(rgbSlice, true);
     }
     gpio_set_function(PIN_BUZZ, GPIO_FUNC_PWM);
     auto slice = pwm_gpio_to_slice_num(PIN_BUZZ);
@@ -250,11 +250,11 @@ inline arcade::Input input(const arcade::Settings &settings) {
     in.rawY = rawY;
     return in;
 }
-inline void rgb(arcade::Color c,const arcade::Settings& settings) {
-    unsigned scale=settings.rgbEnabled?arcade::kLedBrightness[settings.brightness]:0;
-    pwm_set_gpio_level(13,unsigned(c.r)*scale/255);
-    pwm_set_gpio_level(11,unsigned(c.g)*scale/255);
-    pwm_set_gpio_level(12,unsigned(c.b)*scale/255);
+inline void rgb(arcade::Color c, const arcade::Settings &settings) {
+    unsigned scale = settings.rgbEnabled ? arcade::kLedBrightness[settings.brightness] : 0;
+    pwm_set_gpio_level(13, unsigned(c.r) * scale / 255);
+    pwm_set_gpio_level(11, unsigned(c.g) * scale / 255);
+    pwm_set_gpio_level(12, unsigned(c.b) * scale / 255);
 }
 inline void pump() {
     if (toneEnd && int32_t(now() - toneEnd) >= 0)

@@ -42,7 +42,8 @@ struct ArcadeApp {
             settings.secondScreen = !settings.secondScreen;
             break;
         case 2:
-            settings.brightness = (settings.brightness + direction + int(kLedBrightness.size())) % int(kLedBrightness.size());
+            settings.brightness = (settings.brightness + direction + int(kLedBrightness.size())) %
+                                  int(kLedBrightness.size());
             break;
         case 3:
             settings.rotation = (settings.rotation + direction + 4) % 4;
@@ -57,10 +58,10 @@ struct ArcadeApp {
             settings.invertY = !settings.invertY;
             break;
         case 7:
-            settings.rgbEnabled=!settings.rgbEnabled;
+            settings.rgbEnabled = !settings.rgbEnabled;
             break;
         case 8:
-            settings.matrixEnabled=!settings.matrixEnabled;
+            settings.matrixEnabled = !settings.matrixEnabled;
             break;
         case 9:
             mode = Mode::Test;
@@ -89,7 +90,7 @@ struct ArcadeApp {
         bool navReady = elapsed >= navClock;
         if (mode == Mode::Menu) {
             if (navReady && std::fabs(in.y) > .5f) {
-                selection = (selection + (in.y > 0 ? 1 : int(kGameCount)-1)) % int(kGameCount);
+                selection = (selection + (in.y > 0 ? 1 : int(kGameCount) - 1)) % int(kGameCount);
                 navClock = elapsed + 190;
                 event = Event::Select;
             }
@@ -104,7 +105,7 @@ struct ArcadeApp {
         }
         if (mode == Mode::Settings) {
             if (navReady && std::fabs(in.y) > .5f) {
-                settingRow = (settingRow + (in.y > 0 ? 1 : kSettingCount-1)) % kSettingCount;
+                settingRow = (settingRow + (in.y > 0 ? 1 : kSettingCount - 1)) % kSettingCount;
                 navClock = elapsed + 180;
                 event = Event::Select;
             } else if (navReady && std::fabs(in.x) > .5f) {
@@ -173,7 +174,7 @@ struct ArcadeApp {
             s.center(0, "BITDOG ARCADE");
             s.line(0, 10, 127, 10);
             for (int row = 0; row < 3; row++) {
-                int n = (selection + row + int(kGameCount)-1) % int(kGameCount);
+                int n = (selection + row + int(kGameCount) - 1) % int(kGameCount);
                 int y = 14 + row * 11;
                 if (row == 1) {
                     s.rect(0, y - 1, 128, 10);
@@ -188,9 +189,10 @@ struct ArcadeApp {
         }
         if (mode == Mode::Settings) {
             s.center(0, "AJUSTES");
-            const char *labels[] = {"SOM",        "MODO MATRIZ",     "BRILHO LEDS",     "GIRO MATRIZ",
-                                    "TROCAR X/Y", "INVERTER X", "INVERTER Y", "LED RGB", "MATRIZ ON", "TESTAR PLACA"};
-            int top = std::max(0, std::min(kSettingCount-4, settingRow - 1));
+            const char *labels[] = {"SOM",        "MODO MATRIZ", "BRILHO LEDS", "GIRO MATRIZ",
+                                    "TROCAR X/Y", "INVERTER X",  "INVERTER Y",  "LED RGB",
+                                    "MATRIZ ON",  "TESTAR PLACA"};
+            int top = std::max(0, std::min(kSettingCount - 4, settingRow - 1));
             for (int r = 0; r < 4; r++) {
                 int n = top + r;
                 char value[16] = "";
@@ -209,8 +211,11 @@ struct ArcadeApp {
                     std::snprintf(value, sizeof(value), "%s", settings.invertX ? "SIM" : "NAO");
                 if (n == 6)
                     std::snprintf(value, sizeof(value), "%s", settings.invertY ? "SIM" : "NAO");
-                if(n==7)std::snprintf(value,sizeof(value),"%s",settings.rgbEnabled?"ON":"OFF");
-                if(n==8)std::snprintf(value,sizeof(value),"%s",settings.matrixEnabled?"ON":"OFF");
+                if (n == 7)
+                    std::snprintf(value, sizeof(value), "%s", settings.rgbEnabled ? "ON" : "OFF");
+                if (n == 8)
+                    std::snprintf(value, sizeof(value), "%s",
+                                  settings.matrixEnabled ? "ON" : "OFF");
                 std::snprintf(b, sizeof(b), "%c%-12s%s", n == settingRow ? '>' : ' ', labels[n],
                               value);
                 s.text(0, 13 + r * 10, b);
@@ -261,17 +266,18 @@ struct ArcadeApp {
     }
     void matrix(Matrix &leds) const {
         leds.fill({});
-        if(!settings.matrixEnabled)return;
+        if (!settings.matrixEnabled)
+            return;
         auto put = [&](int x, int y, Color c) {
             if (x >= 0 && x < 5 && y >= 0 && y < 5)
                 leds[y * 5 + x] = c;
         };
         Color c = gameColor();
         if (mode == Mode::Settings || mode == Mode::Help || mode == Mode::Menu) {
-            constexpr uint8_t symbols[kGameCount][5] = {{30, 16, 30, 2, 30},  {17, 10, 4, 10, 17},
-                                               {31, 21, 31, 21, 31}, {14, 31, 21, 14, 17},
-                                               {6, 15, 30, 12, 4},   {7, 14, 31, 12, 22},
-                                               {4, 14, 4, 14, 17},   {31, 17, 23, 20, 31}, {14,17,31,17,14}};
+            constexpr uint8_t symbols[kGameCount][5] = {
+                {30, 16, 30, 2, 30},  {17, 10, 4, 10, 17},  {31, 21, 31, 21, 31},
+                {14, 31, 21, 14, 17}, {6, 15, 30, 12, 4},   {7, 14, 31, 12, 22},
+                {4, 14, 4, 14, 17},   {31, 17, 23, 20, 31}, {14, 17, 31, 17, 14}};
             int n = (mode == Mode::Menu || mode == Mode::Help) ? selection : session.game;
             for (int y = 0; y < 5; y++)
                 for (int x = 0; x < 5; x++)

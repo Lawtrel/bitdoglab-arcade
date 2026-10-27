@@ -3,8 +3,8 @@
 #include "../games/flappy.hpp"
 #include "../games/invaders.hpp"
 #include "../games/maze.hpp"
-#include "../games/pong.hpp"
 #include "../games/pokemon.hpp"
+#include "../games/pong.hpp"
 #include "../games/rpg.hpp"
 #include "../games/runner.hpp"
 #include "../games/snake.hpp"
@@ -38,7 +38,9 @@ struct GameFactory {
              &GameSession::draw_rpg, &GameSession::matrix_rpg},
             {"LABIRINTOS", "3 CHAVES. B: MAPA", &GameSession::reset_maze, &GameSession::update_maze,
              &GameSession::draw_maze, &GameSession::matrix_maze},
-            {"POKEMON MINI","B: EQUIPE / BATALHA",&GameSession::reset_pokemon,&GameSession::update_pokemon,&GameSession::draw_pokemon,&GameSession::matrix_pokemon},
+            {"POKEMON MINI", "B: EQUIPE / BATALHA", &GameSession::reset_pokemon,
+             &GameSession::update_pokemon, &GameSession::draw_pokemon,
+             &GameSession::matrix_pokemon},
         };
         return catalog[index % count];
     }

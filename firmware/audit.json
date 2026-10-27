@@ -1,12 +1,12 @@
 {
   "status": "compiled_and_audited_not_physically_verified",
-  "app": "bitdoglab_arcade_v2",
-  "games": 8,
-  "uf2_sha256": "97de177555a5b7f03bf3ee07623082f71c00ca97f8ad725b2b2d62d67de4bbb6",
-  "uf2_bytes": 145920,
-  "blocks": 285,
-  "flash_image_bytes": 72940,
-  "bin_sha256": "11a4b3ff93c421c98aa7b7d57fec54785db5251f795041dbfed40361fe2cd6d4",
+  "app": "bitdoglab_arcade_v3",
+  "games": 9,
+  "uf2_sha256": "4e75608035198c9504044063362ad60c560e867d990178b4cf59deec0731f0db",
+  "uf2_bytes": 180736,
+  "blocks": 353,
+  "flash_image_bytes": 90252,
+  "bin_sha256": "8b5b38b1ab8effb45abc60a3fa7105fb365a539f888568e88f798b25a4293f03",
   "selftest": "Embedded self-test runs after boot; not executed by this audit.",
   "games_list": [
     "Cobrinha",
@@ -16,6 +16,7 @@
     "Pulinho",
     "Corrida Azul",
     "Mini RPG",
-    "Labirintos"
+    "Labirintos",
+    "Pokemon Mini"
   ]
 }

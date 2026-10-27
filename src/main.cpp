@@ -43,7 +43,7 @@ int main() {
             board::display(screen);
             engine.matrix(colors);
             board::matrix(colors, engine.settings);
-            board::rgb(engine.gameColor(),engine.settings);
+            board::rgb(engine.gameColor(), engine.settings);
         }
         int ch = getchar_timeout_us(0);
         if (ch == '?') {

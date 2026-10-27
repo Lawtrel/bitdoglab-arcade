@@ -3,7 +3,8 @@
 #include "types.hpp"
 namespace arcade {
 struct GameSession {
-    RunnerState runner;PokemonState pokemon;
+    RunnerState runner;
+    PokemonState pokemon;
     GameSignal signal = GameSignal::Running;
     Event event = Event::None;
     int game = 0, score = 0, lives = 3, level = 1;
@@ -404,8 +405,8 @@ struct GameSession {
     void draw_maze(Screen &s);
     void matrix_maze(Matrix &leds) const;
     void reset_pokemon();
-    void update_pokemon(const Input&,unsigned);
-    void draw_pokemon(Screen&);
-    void matrix_pokemon(Matrix&)const;
+    void update_pokemon(const Input &, unsigned);
+    void draw_pokemon(Screen &);
+    void matrix_pokemon(Matrix &) const;
 };
 } // namespace arcade
